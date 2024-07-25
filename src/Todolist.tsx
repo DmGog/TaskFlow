@@ -48,7 +48,7 @@ export const Todolist = ({
     }
 
 
-    const tasksElement: Array<JSX.Element> | JSX.Element = tasks.length !== 0 ?
+     const tasksElement: Array<JSX.Element> | JSX.Element = tasks.length !== 0 ?
 
         tasks.map(task => {
             // const updateTaskHandler = (newTitle: string) => {
