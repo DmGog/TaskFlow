@@ -5,9 +5,9 @@ import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {
     ActionType,
-    AddTodolistAC, ChangeTodolistFilterAC,
-    ChangeTodolistTitleAC,
-    RemoveTodolistAC,
+    addTodolistAC, changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
     todolistsReducer
 } from "./redusers/todolists-reducer";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./redusers/tasks-reducer";
@@ -56,23 +56,23 @@ function AppWithReducers() {
         })
 
     const updateTodolist = (todolistId: string, title: string) => {
-        dispatchToTodolists(ChangeTodolistTitleAC(todolistId, title))
+        dispatchToTodolists(changeTodolistTitleAC(todolistId, title))
     }
 
     const removeTodolist = (todolistId: string) => {
-        const action = RemoveTodolistAC(todolistId)
+        const action = removeTodolistAC(todolistId)
         dispatchToTodolists(action)
         dispatchToTasks(action)
     }
 
     const addTodolist = (title: string) => {
-        const action = AddTodolistAC(title)
+        const action = addTodolistAC(title)
         dispatchToTodolists(action)
         dispatchToTasks(action)
     }
 
     const changeFilter = (newFilter: FilterValuesType, todolistId: string) => {
-        dispatchToTodolists(ChangeTodolistFilterAC(todolistId, newFilter))
+        dispatchToTodolists(changeTodolistFilterAC(todolistId, newFilter))
     }
 
     // tasks
