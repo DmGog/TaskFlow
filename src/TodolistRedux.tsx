@@ -4,7 +4,7 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./redusers/store";
-import {TaskStateType, TodolistType} from "./AppWithRedux";
+import {TodolistType} from "./AppWithRedux";
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redusers/tasks-reducer";
 import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./redusers/todolists-reducer";
 

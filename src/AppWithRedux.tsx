@@ -1,14 +1,10 @@
 import React from "react";
 import "./App.css";
 import {TaskType} from "./Todolist";
-import {v1} from "uuid";
 import {AddItemForm} from "./AddItemForm";
 import {
-    addTodolistAC, changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
+    addTodolistAC
 } from "./redusers/todolists-reducer";
-import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from "./redusers/tasks-reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./redusers/store";
 import {TodolistRedux} from "./TodolistRedux";
