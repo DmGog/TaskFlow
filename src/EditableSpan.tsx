@@ -1,12 +1,12 @@
 // @flow
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, memo, useState} from "react";
 
 type Props = {
     oldTitle: string
     className: string
     updateItem: (newTitle: string) => void
 };
-export const EditableSpan = (props: Props) => {
+export const EditableSpan = memo((props: Props) => {
     const [editMode, setEditMode] = useState(false)
 
     const [newTitle, setNewTitle] = useState(props.oldTitle)
@@ -31,4 +31,4 @@ export const EditableSpan = (props: Props) => {
                      autoFocus/>
             : <span onDoubleClick={activateEditModeHandler} className={props.className}>{props.oldTitle}</span>
     )
-};
+});

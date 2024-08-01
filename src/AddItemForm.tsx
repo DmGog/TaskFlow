@@ -5,7 +5,7 @@ type Props = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm = ({addItem}: Props) => {
+export const AddItemForm = React.memo(({addItem}: Props) => {
     const [taskTitle, setTaskTitle] = useState("")
     const [taskInputError, setTaskInputError] = useState<string | null>(null)
 
@@ -25,7 +25,9 @@ export const AddItemForm = ({addItem}: Props) => {
     }
     //
     const keyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        setTaskInputError(null); // Сброс ошибки
+        if (taskInputError) {
+            setTaskInputError(null)
+        }
         if (e.key === "Enter") {
             if (taskTitle.trim() === "") {
                 setTaskInputError("Field is required");
@@ -48,5 +50,5 @@ export const AddItemForm = ({addItem}: Props) => {
 
         </div>
     );
-};
+});
 
