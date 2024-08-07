@@ -1,7 +1,7 @@
 // @flow
 import {ChangeEvent, memo, useState} from "react";
 
-type Props = {
+export type Props = {
     oldTitle: string
     className: string
     updateItem: (newTitle: string) => void

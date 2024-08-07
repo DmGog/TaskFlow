@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from "react";
 import {Button} from "./Button";
 
-type Props = {
+export type Props = {
     addItem: (title: string) => void
 }
 

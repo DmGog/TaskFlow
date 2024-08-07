@@ -3,10 +3,10 @@ import {Button} from "./Button";
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./redusers/store";
-import {TodolistType} from "./AppWithRedux";
-import {addTaskAC, changeTaskTitleAC} from "./redusers/tasks-reducer";
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "./redusers/todolists-reducer";
+import {AppRootStateType} from "../redusers/store";
+import {TodolistType} from "../AppWithRedux";
+import {addTaskAC, changeTaskTitleAC} from "../redusers/tasks-reducer";
+import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../redusers/todolists-reducer";
 import {Task} from "./Task";
 
 type TodolistPropsType = {

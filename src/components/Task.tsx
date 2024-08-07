@@ -1,6 +1,6 @@
 import React, {ChangeEvent, memo, useCallback} from "react";
 import {useDispatch} from "react-redux";
-import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./redusers/tasks-reducer";
+import {changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "../redusers/tasks-reducer";
 import {EditableSpan} from "./EditableSpan";
 import {Button} from "./Button";
 import {TaskType} from "./TodolistRedux";
