@@ -1,14 +1,12 @@
 import React from "react";
 
 import type {Meta, StoryObj} from "@storybook/react";
-import {fn} from "@storybook/test";
-import {action} from "@storybook/addon-actions"
 import {Task} from "./Task";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 import {useSelector} from "react-redux";
 import {AppRootStateType} from "../redusers/store";
-import {TaskType} from "./TodolistRedux";
 import {v1} from "uuid";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Task> = {
@@ -34,7 +32,16 @@ type Story = StoryObj<typeof Task>;
 
 const Task1 = () => {
     let task = useSelector<AppRootStateType, TaskType>(state => state.tasks["todolistId1"][0])
-    if (!task) task = {id: v1(), title: "DEFAULT", isDone: false}
+    if (!task) task = {
+        id: v1(), title: "DEFAULT", status: TaskStatuses.New,
+        order: 0,
+        addedDate: "",
+        startDate: "",
+        priority: TaskPriorities.Later,
+        deadline: "",
+        description: "",
+        todoListId: "todolistId1"
+    }
     return <Task task={task} id={"todolistId1"}/>
 }
 export const TaskIsNotDone: Story = {

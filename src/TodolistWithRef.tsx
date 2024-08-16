@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
-import {FilterValuesType} from "./App";
 import {Button} from "./components/Button";
+import {TaskStatuses, TaskType} from "./api/todolist-api";
+import {FilterValuesType} from "./redusers/todolists-reducer";
 
 type TodolistPropsType = {
     title: string
@@ -9,13 +10,6 @@ type TodolistPropsType = {
     changeFilter: (newFilter: FilterValuesType) => void
     addTask: (title: string) => void
 }
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
 
 export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: TodolistPropsType) => {
 
@@ -27,7 +21,8 @@ export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: Todo
 
         tasks.map(task => {
             return (
-                <li key={task.id}><input type="checkbox" checked={task.isDone}/> <span>{task.title}</span>
+                <li key={task.id}><input type="checkbox" checked={task.status === TaskStatuses.Completed}/>
+                    <span>{task.title}</span>
                     <Button onClickHandler={() => removeTask(task.id)} title={"x"}/>
                 </li>
             )
@@ -35,7 +30,7 @@ export const Todolist = ({title, tasks, removeTask, changeFilter, addTask}: Todo
 
     const addTaskHandler = () => {
         if (taskInputRef.current) {
-                addTask(taskInputRef.current.value)
+            addTask(taskInputRef.current.value)
             taskInputRef.current.value = ""
         }
     }

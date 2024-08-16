@@ -4,21 +4,19 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../redusers/store";
-import {TodolistType} from "../AppWithRedux";
-import {addTaskAC, changeTaskTitleAC} from "../redusers/tasks-reducer";
-import {changeTodolistFilterAC, changeTodolistTitleAC, removeTodolistAC} from "../redusers/todolists-reducer";
+import {addTaskAC} from "../redusers/tasks-reducer";
+import {
+    changeTodolistFilterAC,
+    changeTodolistTitleAC,
+    removeTodolistAC,
+    TodolistDomainType
+} from "../redusers/todolists-reducer";
 import {Task} from "./Task";
+import {TaskStatuses, TaskType} from "../api/todolist-api";
 
 type TodolistPropsType = {
-    todolist: TodolistType
+    todolist: TodolistDomainType
 }
-
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-
 
 export const TodolistRedux = memo(({
                                        todolist,
@@ -34,10 +32,10 @@ export const TodolistRedux = memo(({
 
     tasks = useMemo(() => {
         if (filter === "active") {
-            tasks = tasks.filter(t => !t.isDone)
+            tasks = tasks.filter(t => t.status === TaskStatuses.New)
         }
         if (filter === "completed") {
-            tasks = tasks.filter(t => t.isDone)
+            tasks = tasks.filter(t => t.status === TaskStatuses.Completed)
         }
         return tasks
     }, [tasks, filter])

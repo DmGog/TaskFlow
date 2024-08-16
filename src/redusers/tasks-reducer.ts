@@ -1,9 +1,10 @@
-import {TaskStateType} from "../App";
-import {TaskType} from "../Todolist";
 import {AddTodolistAT, RemoveTodolistAT} from "./todolists-reducer";
 import {v1} from "uuid";
+import {TaskPriorities, TaskStatuses, TaskType} from "../api/todolist-api";
 
-
+export type TaskStateType = {
+    [todolistId: string]: TaskType[]
+}
 type RemoveTaskAT = ReturnType<typeof removeTaskAC>
 type AddTaskAT = ReturnType<typeof addTaskAC>
 type ChangeTaskStatusAT = ReturnType<typeof changeTaskStatusAC>
@@ -31,14 +32,23 @@ export const tasksReducer = (tasks = initialState, action: ActionType): TaskStat
         }
         case "ADD-TASK": {
             const todolistId = action.payload.todolistId
-            const newTask: TaskType = {id: v1(), title: action.payload.title, isDone: false}
+            const newTask: TaskType = {
+                id: v1(), title: action.payload.title, status: TaskStatuses.New,
+                order: 0,
+                addedDate: "",
+                startDate: "",
+                priority: TaskPriorities.Later,
+                deadline: "",
+                description: "",
+                todoListId: action.payload.todolistId
+            }
             return {...tasks, [todolistId]: [newTask, ...tasks[todolistId]]}
         }
         case "CHANGE-TASK-STATUS": {
             const todolistId = action.payload.todolistId
             const tasksId = action.payload.taskId
-            const isDone = action.payload.isDone
-            return {...tasks, [todolistId]: tasks[todolistId].map(e => e.id === tasksId ? {...e, isDone} : e)}
+            const status = action.payload.status
+            return {...tasks, [todolistId]: tasks[todolistId].map(e => e.id === tasksId ? {...e, status} : e)}
         }
         case "CHANGE-TASK-TITLE": {
             const todolistId = action.payload.todolistId
@@ -77,11 +87,11 @@ export const addTaskAC = (title: string, todolistId: string) => ({
         todolistId
     }
 } as const)
-export const changeTaskStatusAC = (taskId: string, isDone: boolean, todolistId: string) => ({
+export const changeTaskStatusAC = (taskId: string, status: TaskStatuses, todolistId: string) => ({
     type: "CHANGE-TASK-STATUS",
     payload: {
         taskId,
-        isDone,
+        status,
         todolistId
     }
 } as const)
