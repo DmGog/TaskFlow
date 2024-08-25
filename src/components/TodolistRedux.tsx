@@ -4,12 +4,12 @@ import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../redusers/store";
-import {addTaskAC} from "../redusers/tasks-reducer";
+import {createTaskTC} from "../redusers/tasks-reducer";
 import {
     changeTodolistFilterAC,
-    changeTodolistTitleAC,
-    removeTodolistAC,
-    TodolistDomainType
+    deleteTodoThunkTC,
+    TodolistDomainType,
+    updateTodoTitleThunkTC
 } from "../redusers/todolists-reducer";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "../api/todolist-api";
@@ -27,7 +27,7 @@ export const TodolistRedux = memo(({
     const dispatch = useDispatch()
 
     const addTaskHandler = useCallback((title: string) => {
-        dispatch(addTaskAC(title, id))
+        dispatch(createTaskTC(id, title))
     }, [dispatch])
 
     tasks = useMemo(() => {
@@ -46,12 +46,12 @@ export const TodolistRedux = memo(({
         tasks.map(task => <Task key={task.id} task={task} id={id}/>) : <span>нет тасок</span>
 
     const updateTodolistHandler = useCallback((title: string) => {
-        dispatch(changeTodolistTitleAC(id, title))
+        dispatch(updateTodoTitleThunkTC(id, title))
     }, [dispatch])
 
     return (
         <div className="todolist">
-            <Button title={"X"} onClickHandler={useCallback(() => dispatch(removeTodolistAC(id)), [dispatch])}/>
+            <Button title={"X"} onClickHandler={useCallback(() => dispatch(deleteTodoThunkTC(id)), [dispatch])}/>
             <h3><EditableSpan oldTitle={title} className={""} updateItem={updateTodolistHandler}/></h3>
             <AddItemForm addItem={addTaskHandler}/>
             <ul>

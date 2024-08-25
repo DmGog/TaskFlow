@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import AppWithReducers from "./AppWithReducers";
-import AppWithRedux from "./AppWithRedux";
+import AppWithReducers from "./trash/AppWithReducers";
+import AppWithRedux from "./app/AppWithRedux";
 import {Provider} from "react-redux";
 import {store} from "./redusers/store";
 
