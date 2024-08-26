@@ -1,9 +1,9 @@
 import React from "react";
 import {Button} from "../components/Button";
-import {AddItemForm} from "../components/AddItemForm";
-import {EditableSpan} from "../components/EditableSpan";
+import {AddItemForm} from "../components/AddItemForm/AddItemForm";
+import {EditableSpan} from "../components/EditableSpan/EditableSpan";
 import {TaskStatuses, TaskType} from "../api/todolist-api";
-import {FilterValuesType} from "../redusers/todolists-reducer";
+import {FilterValuesType} from "../features/todolists/todolists-reducer";
 
 type TodolistPropsType = {
     todolistId: string

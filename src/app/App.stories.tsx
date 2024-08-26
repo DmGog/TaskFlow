@@ -1,13 +1,13 @@
 import type {Meta, StoryObj} from "@storybook/react";
-import AppWithRedux from "../app/AppWithRedux";
+import App from "./App";
 import {Provider} from "react-redux";
-import {store} from "../redusers/store";
-import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
+import {store} from "./store";
+import {ReduxStoreProviderDecorator} from "../api/ReduxStoreProviderDecorator";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof AppWithRedux> = {
+const meta: Meta<typeof App> = {
     title: "TODOLIST/AppWithRedux",
-    component: AppWithRedux,
+    component: App,
     parameters: {
         // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
         layout: "centered",
@@ -21,9 +21,9 @@ const meta: Meta<typeof AppWithRedux> = {
 
 export default meta;
 
-type Story = StoryObj<typeof AppWithRedux>;
+type Story = StoryObj<typeof App>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const AppWithReduxStory: Story = {
-    render: () => <AppWithRedux/>
+    render: () => <App/>
 };

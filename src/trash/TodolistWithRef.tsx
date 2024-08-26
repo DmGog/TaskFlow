@@ -1,7 +1,7 @@
 import React, {useRef} from "react";
 import {Button} from "../components/Button";
 import {TaskStatuses, TaskType} from "../api/todolist-api";
-import {FilterValuesType} from "../redusers/todolists-reducer";
+import {FilterValuesType} from "../features/todolists/todolists-reducer";
 
 type TodolistPropsType = {
     title: string
