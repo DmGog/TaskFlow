@@ -1,25 +1,27 @@
-import {tasksReducer} from "../features/todolists/task/tasks-reducer";
-import {todolistsReducer} from "../features/todolists/todolists-reducer";
-import {AnyAction, applyMiddleware, combineReducers, legacy_createStore} from "redux";
-import thunk, {ThunkDispatch} from "redux-thunk";
-import {useDispatch} from "react-redux";
+import { tasksReducer } from "features/TodolistsList/tasks-reducer"
+import { todolistsReducer } from "features/TodolistsList/todolists-reducer"
+import { combineReducers } from "redux"
+import { ThunkAction, ThunkDispatch } from "redux-thunk"
+import { appReducer } from "./app-reducer"
+import { authReducer } from "features/Login/auth-reducer"
+import { configureStore, UnknownAction } from "@reduxjs/toolkit"
 
-// объединяя reducer-ы с помощью combineReducers,
-// мы задаём структуру нашего единственного объекта-состояния
 const rootReducer = combineReducers({
-    tasks: tasksReducer,
-    todolists: todolistsReducer
+  tasks: tasksReducer,
+  todolists: todolistsReducer,
+  app: appReducer,
+  auth: authReducer,
 })
-// непосредственно создаём store
-export const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
-// определить автоматически тип всего объекта состояния
+
+// ❗старая запись, с новыми версиями не работает
+//  const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
+export const store = configureStore({ reducer: rootReducer })
+
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
-export type AppThunkDispatch = ThunkDispatch<AppRootStateType, unknown, AnyAction>
+// ❗ UnknownAction вместо AnyAction
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, UnknownAction>
 
-export const useAppDispatch = () => useDispatch<AppThunkDispatch>();
-
-
-// а это, чтобы можно было в консоли браузера обращаться к store в любой момент
-// @ts-ignore
-window.store = store
+// export type AppDispatch = typeof store.dispatch
+// ❗ UnknownAction вместо AnyAction
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, UnknownAction>

@@ -1,54 +1,53 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from "react";
-import {Button} from "../Button";
+import React, { ChangeEvent, KeyboardEvent, useState } from "react"
+import { IconButton, TextField } from "@mui/material"
+import { AddBox } from "@mui/icons-material"
 
-export type Props = {
-    addItem: (title: string) => void
+type AddItemFormPropsType = {
+  addItem: (title: string) => void
+  disabled?: boolean
 }
 
-export const AddItemForm = React.memo(({addItem}: Props) => {
-    const [taskTitle, setTaskTitle] = useState("")
-    const [taskInputError, setTaskInputError] = useState<string | null>(null)
+export const AddItemForm = React.memo(function ({ addItem, disabled = false }: AddItemFormPropsType) {
+  let [title, setTitle] = useState("")
+  let [error, setError] = useState<string | null>(null)
 
-
-    const addItemHandler = () => {
-        if (taskTitle.trim() === "") {
-            setTaskInputError("Field is required")
-        } else {
-            addItem(taskTitle.trim());
-            setTaskTitle("")
-        }
+  const addItemHandler = () => {
+    if (title.trim() !== "") {
+      addItem(title)
+      setTitle("")
+    } else {
+      setError("Title is required")
     }
+  }
 
-    const changeItemTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(e.currentTarget.value)
-        setTaskInputError(null)
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.currentTarget.value)
+  }
+
+  const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (error !== null) {
+      setError(null)
     }
-    //
-    const keyDownAddTaskHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (taskInputError) {
-            setTaskInputError(null)
-        }
-        if (e.key === "Enter") {
-            if (taskTitle.trim() === "") {
-                setTaskInputError("Field is required");
-            } else {
-                addItem(taskTitle);
-                setTaskTitle("");
-            }
-        }
+    if (e.charCode === 13) {
+      addItemHandler()
     }
-    return (
-        <div>
-            <input value={taskTitle}
-                   onChange={changeItemTitleHandler}
-                   onKeyDown={keyDownAddTaskHandler}
-                   className={taskInputError ? "taskInputError" : ""}
-            />
-            <Button onClickHandler={addItemHandler} title={"+"}/>
-            {taskTitle.length > 15 && <div>Много символов</div>}
-            {taskInputError && <div>Field is required</div>}
+  }
 
-        </div>
-    );
-});
-
+  return (
+    <div>
+      <TextField
+        variant="outlined"
+        disabled={disabled}
+        error={!!error}
+        value={title}
+        onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
+        label="Title"
+        helperText={error}
+      />
+      <IconButton color="primary" onClick={addItemHandler} disabled={disabled}>
+        <AddBox />
+      </IconButton>
+    </div>
+  )
+})
