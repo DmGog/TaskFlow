@@ -1,16 +1,15 @@
 import React, {useCallback, useEffect} from "react"
 import {useSelector} from "react-redux"
-import {AppRootStateType} from "app/store"
 import {
     addTodolistTC,
     changeTodolistFilterAC,
     changeTodolistTitleTC,
     fetchTodolistsTC,
     FilterValuesType,
-    removeTodolistTC, selectTodolists,
-    TodolistDomainType,
+    removeTodolistTC,
+    selectTodolists,
 } from "features/TodolistsList/todolistsSlice"
-import {addTaskTC, removeTaskTC, selectTasks, TasksStateType, updateTaskTC} from "features/TodolistsList/tasksSlice"
+import {addTaskTC, removeTaskTC, selectTasks, updateTaskTC} from "features/TodolistsList/tasksSlice"
 import {TaskStatuses} from "api/todolists-api"
 import {Grid, Paper} from "@mui/material"
 import {AddItemForm} from "components/AddItemForm/AddItemForm"
@@ -39,22 +38,21 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = removeTaskTC(id, todolistId)
+        const thunk = removeTaskTC({todolistId, taskId: id})
         dispatch(thunk)
     }, [])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
-        const thunk = addTaskTC(title, todolistId)
+        const thunk = addTaskTC({title, todolistId})
         dispatch(thunk)
     }, [])
 
     const changeStatus = useCallback(function (id: string, status: TaskStatuses, todolistId: string) {
-        const thunk = updateTaskTC(id, {status}, todolistId)
-        dispatch(thunk)
+        dispatch(updateTaskTC({taskId: id, domainModel: {status}, todolistId}))
     }, [])
 
-    const changeTaskTitle = useCallback(function (id: string, newTitle: string, todolistId: string) {
-        const thunk = updateTaskTC(id, {title: newTitle}, todolistId)
+    const changeTaskTitle = useCallback(function (id: string, title: string, todolistId: string) {
+        const thunk = updateTaskTC({taskId: id, domainModel: {title}, todolistId})
         dispatch(thunk)
     }, [])
 

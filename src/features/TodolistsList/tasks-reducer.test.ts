@@ -1,10 +1,8 @@
 import {
-    addTaskAC,
-    fetchTasksTC,
-    removeTaskAC,
+    addTaskTC,
+    fetchTasksTC, removeTaskTC,
     tasksReducer,
-    TasksStateType,
-    updateTaskAC
+    TasksStateType, updateTaskTC,
 } from "features/TodolistsList/tasksSlice"
 
 import {addTodolistAC, removeTodolistAC, setTodolistsAC} from "features/TodolistsList/todolistsSlice"
@@ -93,7 +91,10 @@ beforeEach(() => {
 })
 
 test("correct task should be deleted from correct array", () => {
-    const action = removeTaskAC({taskId: "2", todolistId: "todolistId2"})
+    const action = removeTaskTC.fulfilled({
+        taskId: "2",
+        todolistId: "todolistId2"
+    }, "requestId", {todolistId: "todolistId2", taskId: "2"})
 
     const endState = tasksReducer(startState, action)
 
@@ -103,7 +104,7 @@ test("correct task should be deleted from correct array", () => {
 })
 test("correct task should be added to correct array", () => {
     //const action = addTaskAC("juce", "todolistId2");
-    const action = addTaskAC({
+    const action = addTaskTC.fulfilled({
         task: {
             todoListId: "todolistId2",
             title: "juce",
@@ -116,7 +117,7 @@ test("correct task should be added to correct array", () => {
             startDate: "",
             id: "id exists",
         },
-    })
+    }, "requestId", {todolistId: "todolistId2", title: "juce"})
 
     const endState = tasksReducer(startState, action)
 
@@ -127,9 +128,15 @@ test("correct task should be added to correct array", () => {
     expect(endState["todolistId2"][0].status).toBe(TaskStatuses.New)
 })
 test("status of specified task should be changed", () => {
-    const action = updateTaskAC({
+    const action = updateTaskTC.fulfilled({
         taskId: "2",
-        model: {
+       domainModel: {
+            status: TaskStatuses.New,
+        },
+        todolistId: "todolistId2",
+    }, "requestId", {
+        taskId: "2",
+        domainModel: {
             status: TaskStatuses.New,
         },
         todolistId: "todolistId2",
@@ -141,9 +148,15 @@ test("status of specified task should be changed", () => {
     expect(endState["todolistId2"][1].status).toBe(TaskStatuses.New)
 })
 test("title of specified task should be changed", () => {
-    const action = updateTaskAC({
+    const action = updateTaskTC.fulfilled({
         taskId: "2",
-        model: {
+        domainModel: {
+            title: "yogurt",
+        },
+        todolistId: "todolistId2",
+    }, "requestId", {
+        taskId: "2",
+        domainModel: {
             title: "yogurt",
         },
         todolistId: "todolistId2",
