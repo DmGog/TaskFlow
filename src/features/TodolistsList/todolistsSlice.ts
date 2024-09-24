@@ -2,6 +2,7 @@ import {ResultCode, todolistsAPI, TodolistType} from "api/todolists-api"
 import {RequestStatusType, setAppStatusAC} from "app/appSlice"
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import {asyncThunkCreator, buildCreateSlice, PayloadAction} from "@reduxjs/toolkit"
+import {fetchTasksTC} from "features/TodolistsList/tasksSlice";
 
 const initialState: Array<TodolistDomainType> = []
 export type FilterValuesType = "all" | "active" | "completed"
@@ -33,7 +34,9 @@ export const todolistsSlice = createAppSlice({
                 const index = state.findIndex((todo) => todo.id === action.payload.id)
                 state[index].entityStatus = action.payload.status
             }),
-            clearTasksAndTodolists:creators.reducer(()=>{return []}),
+            clearTasksAndTodolists: creators.reducer(() => {
+                return []
+            }),
             fetchTodolistsTC: creators.asyncThunk<undefined, { todolists: TodolistType[] }>(async (_, {
                 dispatch, rejectWithValue
             }) => {
