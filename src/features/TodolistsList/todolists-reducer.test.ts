@@ -1,8 +1,8 @@
 import {
     addTodolistTC,
     changeTodolistEntityStatusAC,
-    changeTodolistFilterAC,
-    changeTodolistTitleAC, fetchTodolistsTC,
+    changeTodolistFilterAC, changeTodolistTitleTC,
+    fetchTodolistsTC,
     FilterValuesType, removeTodolistTC,
     TodolistDomainType,
     todolistsReducer,
@@ -63,8 +63,15 @@ test("correct todolist should be added", () => {
 
 test("correct todolist should change its name", () => {
     let newTodolistTitle = "New Todolist"
+    type actionType = Omit<ReturnType<typeof changeTodolistTitleTC.fulfilled>, "meta">
 
-    const action = changeTodolistTitleAC({id: todolistId2, title: newTodolistTitle})
+    const action: actionType = {
+        type: changeTodolistTitleTC.fulfilled.type,
+        payload: {
+            id: "todolistId2",
+            title: newTodolistTitle,
+        }
+    }
 
     const endState = todolistsReducer(startState, action)
 
