@@ -11,7 +11,7 @@ import {
 } from "api/todolists-api"
 import {setAppStatusAC} from "app/appSlice"
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
-import {createSlice} from "@reduxjs/toolkit"
+import {asyncThunkCreator, buildCreateSlice, createSlice} from "@reduxjs/toolkit"
 import {clearTasksAndTodolists} from "app/common/actions/common.acions";
 import {createAppAsyncThunk} from "utils/createAppAsyncThunk";
 
@@ -28,23 +28,6 @@ export type TasksStateType = {
 }
 
 const initialState: TasksStateType = {}
-
-export const fetchTasksTC = createAppAsyncThunk<{
-    tasks: TaskType[],
-    todolistId: string
-}, string>("tasks/fetchTasks", async (todolistId: string, thunkAPI) => {
-    thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
-    try {
-        const res = await todolistsAPI.getTasks(todolistId)
-        const tasks = res.data.items
-        thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
-        return {tasks, todolistId}
-    } catch (err) {
-        handleServerNetworkError(err, thunkAPI.dispatch)
-        thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
-        return thunkAPI.rejectWithValue(null)
-    }
-})
 
 export const addTaskTC = createAppAsyncThunk<{
     task: TaskType
@@ -124,10 +107,38 @@ export const updateTaskTC = createAppAsyncThunk<
     }
 })
 
-const tasksSlice = createSlice({
+const createAppSlice = buildCreateSlice({
+    creators: {asyncThunk: asyncThunkCreator},
+});
+
+
+const tasksSlice = createAppSlice({
     name: "tasks",
     initialState: initialState,
-    reducers: {},
+    reducers: ((creators) => {
+        return {
+            fetchTasksTC: creators.asyncThunk<{ todolistId: string }, {
+                tasks: TaskType[],
+                todolistId: string
+            }>(async (arg, {dispatch, rejectWithValue}) => {
+                dispatch(setAppStatusAC({status: "loading"}))
+                try {
+                    const res = await todolistsAPI.getTasks(arg.todolistId)
+                    const tasks = res.data.items
+                    dispatch(setAppStatusAC({status: "succeeded"}))
+                    return {tasks, todolistId: arg.todolistId}
+                } catch (err) {
+                    handleServerNetworkError(err, dispatch)
+                    dispatch(setAppStatusAC({status: "failed"}))
+                    return rejectWithValue(null)
+                }
+            }, {
+                fulfilled: (state, action) => {
+                    state[action.payload.todolistId] = action.payload.tasks
+                }
+            })
+        }
+    }),
     selectors: {
         selectTasks: (sliceState) => sliceState
     },
@@ -147,9 +158,6 @@ const tasksSlice = createSlice({
             }).addCase(clearTasksAndTodolists, () => {
             return {}
         })
-            .addCase(fetchTasksTC.fulfilled, (state, action) => {
-                state[action.payload.todolistId] = action.payload.tasks
-            })
             .addCase(addTaskTC.fulfilled, (state, action) => {
                 const tasks = state[action.payload.task.todoListId]
                 tasks.unshift(action.payload.task)
@@ -169,6 +177,7 @@ const tasksSlice = createSlice({
 
 
 export const tasksReducer = tasksSlice.reducer
+export const {fetchTasksTC} = tasksSlice.actions
 export const {selectTasks} = tasksSlice.selectors
 
 

@@ -170,15 +170,15 @@ test("title of specified task should be changed", () => {
 })
 test("new array should be added when new todolist is added", () => {
     type actionType = Omit<ReturnType<typeof addTodolistTC.fulfilled>, "meta">
-    const action:actionType = {
-        type:addTodolistTC.fulfilled.type,
-        payload:{
-            todolist:{
-                    id: "blabla",
-                    title: "new todolist",
-                    order: 0,
-                    addedDate: "",
-                }
+    const action: actionType = {
+        type: addTodolistTC.fulfilled.type,
+        payload: {
+            todolist: {
+                id: "blabla",
+                title: "new todolist",
+                order: 0,
+                addedDate: "",
+            }
         }
     }
 
@@ -212,9 +212,9 @@ test("propertry with todolistId should be deleted", () => {
 test("empty arrays should be added when we set todolists", () => {
 
     type actionType = Omit<ReturnType<typeof fetchTodolistsTC.fulfilled>, "meta">
-    const action:actionType = {
+    const action: actionType = {
         type: fetchTodolistsTC.fulfilled.type,
-        payload:{
+        payload: {
             todolists: [
                 {id: "1", title: "title 1", order: 0, addedDate: ""},
                 {id: "2", title: "title 2", order: 0, addedDate: ""},
@@ -230,11 +230,14 @@ test("empty arrays should be added when we set todolists", () => {
     expect(endState["2"]).toBeDefined()
 })
 test("tasks should be added for todolist", () => {
-    const action = fetchTasksTC.fulfilled({
-        todolistId: "todolistId1",
-        tasks: startState["todolistId1"],
-    }, "requestId", "todolistId1")
-
+    type actionType = Omit<ReturnType<typeof fetchTasksTC.fulfilled>, "meta">
+    const action: actionType = {
+        type: fetchTasksTC.fulfilled.type,
+        payload: {
+            tasks: startState["todolistId1"],
+            todolistId: "todolistId1"
+        }
+    }
     const endState = tasksReducer(
         {
             todolistId2: [],
