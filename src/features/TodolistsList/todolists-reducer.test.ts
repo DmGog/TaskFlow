@@ -1,5 +1,5 @@
 import {
-    addTodolistAC,
+    addTodolistTC,
     changeTodolistEntityStatusAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC, fetchTodolistsTC,
@@ -39,14 +39,22 @@ test("correct todolist should be removed", () => {
 })
 
 test("correct todolist should be added", () => {
-    let todolist: TodolistType = {
-        title: "New Todolist",
-        id: "any id",
-        addedDate: "",
-        order: 0,
+
+
+    type actionType = Omit<ReturnType<typeof addTodolistTC.fulfilled>, "meta">
+    const action: actionType = {
+        type: addTodolistTC.fulfilled.type,
+        payload: {
+            todolist: {
+                id: "blabla",
+                title: "new todolist",
+                order: 0,
+                addedDate: "",
+            }
+        }
     }
 
-    const endState = todolistsReducer(startState, addTodolistAC({todolist}))
+    const endState = todolistsReducer(startState, action)
 
     expect(endState.length).toBe(3)
     expect(endState[0].title).toBe("What to learn")

@@ -1,4 +1,4 @@
-import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from "features/TodolistsList/todolistsSlice"
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "features/TodolistsList/todolistsSlice"
 import {
     AddTaskArgs,
     ResultCode,
@@ -133,7 +133,7 @@ const tasksSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addTodolistAC, (state, action) => {
+            .addCase(addTodolistTC.fulfilled, (state, action) => {
                 state[action.payload.todolist.id] = []
             })
             .addCase(removeTodolistTC.fulfilled, (state, action) => {
