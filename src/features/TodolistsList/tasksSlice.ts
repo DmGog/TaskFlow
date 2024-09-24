@@ -1,6 +1,7 @@
-import {addTodolistAC, removeTodolistAC, setTodolistsAC,} from "features/TodolistsList/todolistsSlice"
+import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from "features/TodolistsList/todolistsSlice"
 import {
     AddTaskArgs,
+    ResultCode,
     TaskPriorities,
     TaskStatuses,
     TaskType,
@@ -26,43 +27,43 @@ export type TasksStateType = {
     [key: string]: Array<TaskType>
 }
 
-
 const initialState: TasksStateType = {}
-
 
 export const fetchTasksTC = createAppAsyncThunk<{
     tasks: TaskType[],
     todolistId: string
 }, string>("tasks/fetchTasks", async (todolistId: string, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
     try {
-        thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
         const res = await todolistsAPI.getTasks(todolistId)
         const tasks = res.data.items
         thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
         return {tasks, todolistId}
     } catch (err) {
         handleServerNetworkError(err, thunkAPI.dispatch)
+        thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
         return thunkAPI.rejectWithValue(null)
     }
 })
 
-
 export const addTaskTC = createAppAsyncThunk<{
     task: TaskType
 }, AddTaskArgs>("tasks/addTask", async (arg, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
     try {
-        thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
         const res = await todolistsAPI.createTask(arg)
-        if (res.data.resultCode === 0) {
+        if (res.data.resultCode === ResultCode.success) {
             thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
             const task = res.data.data.item
             return {task}
         } else {
             handleServerAppError(res.data, thunkAPI.dispatch)
+            thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
             return thunkAPI.rejectWithValue(null)
         }
     } catch (err) {
         handleServerNetworkError(err, thunkAPI.dispatch)
+        thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
         return thunkAPI.rejectWithValue(null)
     }
 
@@ -72,10 +73,14 @@ export const removeTaskTC = createAppAsyncThunk<{ todolistId: string, taskId: st
     todolistId: string,
     taskId: string
 }>("tasks/removeTask", async (arg, thunkAPI) => {
+    thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
     try {
         const res = await todolistsAPI.deleteTask(arg.todolistId, arg.taskId)
+        thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
         return {taskId: arg.taskId, todolistId: arg.todolistId}
+
     } catch (err) {
+        thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
         return thunkAPI.rejectWithValue(null)
     }
 })
@@ -98,20 +103,23 @@ export const updateTaskTC = createAppAsyncThunk<
         status: task.status,
         ...arg.domainModel,
     }
-
+    thunkAPI.dispatch(setAppStatusAC({status: "loading"}))
     try {
         const res = await todolistsAPI.updateTask(arg.todolistId, arg.taskId, apiModel)
-        if (res.data.resultCode === 0) return {
+        thunkAPI.dispatch(setAppStatusAC({status: "succeeded"}))
+        if (res.data.resultCode === ResultCode.success) return {
             taskId: arg.taskId,
             domainModel: arg.domainModel,
             todolistId: arg.todolistId
         }
         else {
             handleServerAppError(res.data, thunkAPI.dispatch)
+            thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
             return thunkAPI.rejectWithValue(null)
         }
     } catch (error) {
         handleServerNetworkError(error, thunkAPI.dispatch)
+        thunkAPI.dispatch(setAppStatusAC({status: "failed"}))
         return thunkAPI.rejectWithValue(null)
     }
 })
@@ -128,10 +136,10 @@ const tasksSlice = createSlice({
             .addCase(addTodolistAC, (state, action) => {
                 state[action.payload.todolist.id] = []
             })
-            .addCase(removeTodolistAC, (state, action) => {
+            .addCase(removeTodolistTC.fulfilled, (state, action) => {
                 delete state[action.payload.id]
             })
-            .addCase(setTodolistsAC, (state, action) => {
+            .addCase(fetchTodolistsTC.fulfilled, (state, action) => {
                 action.payload.todolists.reduce((acc, tl) => {
                     acc[tl.id] = []
                     return acc
