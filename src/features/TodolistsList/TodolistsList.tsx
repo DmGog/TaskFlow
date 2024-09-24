@@ -7,7 +7,7 @@ import {
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
-    selectTodolists,
+    selectTodolists, todolistsSlice,
 } from "features/TodolistsList/todolistsSlice"
 import {addTaskTC, removeTaskTC, selectTasks, updateTaskTC} from "features/TodolistsList/tasksSlice"
 import {TaskStatuses} from "api/todolists-api"
@@ -33,8 +33,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         if (demo || !isLoggedIn) {
             return
         }
-        const thunk = fetchTodolistsTC()
-        dispatch(thunk)
+        dispatch(fetchTodolistsTC())
     }, [])
 
     const removeTask = useCallback(function (id: string, todolistId: string) {

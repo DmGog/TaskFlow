@@ -210,13 +210,17 @@ test("propertry with todolistId should be deleted", () => {
 })
 
 test("empty arrays should be added when we set todolists", () => {
-    const action = fetchTodolistsTC.fulfilled({
-        todolists: [
-            {id: "1", title: "title 1", order: 0, addedDate: ""},
-            {id: "2", title: "title 2", order: 0, addedDate: ""},
-        ],
-    }, "requestId")
 
+    type actionType = Omit<ReturnType<typeof fetchTodolistsTC.fulfilled>, "meta">
+    const action:actionType = {
+        type: fetchTodolistsTC.fulfilled.type,
+        payload:{
+            todolists: [
+                {id: "1", title: "title 1", order: 0, addedDate: ""},
+                {id: "2", title: "title 2", order: 0, addedDate: ""},
+            ]
+        }
+    }
     const endState = tasksReducer({}, action)
 
     const keys = Object.keys(endState)

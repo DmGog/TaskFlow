@@ -90,7 +90,13 @@ test("correct filter of todolist should be changed", () => {
     expect(endState[1].filter).toBe(newFilter)
 })
 test("todolists should be added", () => {
-    const action = fetchTodolistsTC.fulfilled({todolists: startState}, "")
+    type actionType = Omit<ReturnType<typeof fetchTodolistsTC.fulfilled>, "meta">
+    const action: actionType = {
+        type: fetchTodolistsTC.fulfilled.type,
+        payload: {
+            todolists: startState
+        }
+    }
 
     const endState = todolistsReducer([], action)
 

@@ -16,7 +16,7 @@ export const handleServerAppError = <D>(
     dispatch(setAppStatusAC({status: "failed"}))
 }
 
-export const handleServerNetworkError = (err: unknown, dispatch: AppDispatch):void => {
+export const handleServerNetworkError = (err: unknown, dispatch: Dispatch):void => {
   let errorMessage = "Some error occurred";
 
   // ❗Проверка на наличие axios ошибки
