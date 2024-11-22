@@ -15,7 +15,7 @@ export const AddItemForm = React.memo(function ({addItem, disabled = false}: Add
         if (title.trim() === "") {
             setError("Title is required")
         } else if (title.length > 100) {
-            setError("Title must be 30 characters or less")
+            setError("Title must be 100 characters or less")
         } else {
             addItem(title)
             setTitle("")
