@@ -12,4 +12,4 @@ Task Flow is a React application for task management.
 - Jest and React Testing Library: For testing the application, including:
 - Unit tests for individual components.
 - Integration tests to ensure components work together.
-- TypeScript: For type safety.
+- TypeScript: For type safety.__
