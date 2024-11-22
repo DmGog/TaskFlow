@@ -43,7 +43,7 @@ export const Login = () => {
         <Grid container justifyContent="center">
             <Grid item xs={4}>
                 <form onSubmit={formik.handleSubmit}>
-                    <FormControl>
+                    <FormControl style={{marginTop:"100px"}}>
                         <FormLabel>
                             <p>
                                 To log in get registered{" "}
