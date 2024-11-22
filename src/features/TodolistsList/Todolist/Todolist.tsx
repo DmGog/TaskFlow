@@ -1,13 +1,13 @@
-import React, {useCallback, useEffect} from "react"
-import {AddItemForm} from "components/AddItemForm/AddItemForm"
-import {EditableSpan} from "components/EditableSpan/EditableSpan"
-import {Task} from "./Task/Task"
-import {TaskStatuses, TaskType} from "api/todolists-api"
-import {FilterValuesType, TodolistDomainType} from "features/TodolistsList/todolistsSlice"
-import {fetchTasksTC} from "features/TodolistsList/tasksSlice"
-import {useAppDispatch} from "hooks/useAppDispatch"
-import {Button, IconButton} from "@mui/material"
-import {Delete} from "@mui/icons-material"
+import React, { useCallback, useEffect } from "react"
+import { AddItemForm } from "components/AddItemForm/AddItemForm"
+import { EditableSpan } from "components/EditableSpan/EditableSpan"
+import { Task } from "./Task/Task"
+import { TaskStatuses, TaskType } from "api/todolists-api"
+import { FilterValuesType, TodolistDomainType } from "features/TodolistsList/todolistsSlice"
+import { fetchTasksTC } from "features/TodolistsList/tasksSlice"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { Button, IconButton } from "@mui/material"
+import { Delete } from "@mui/icons-material"
 
 type PropsType = {
     todolist: TodolistDomainType
@@ -19,16 +19,12 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) => void
     removeTodolist: (id: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
-    demo?: boolean
 }
 
-export const Todolist = React.memo(function ({demo = false, ...props}: PropsType) {
+export const Todolist = React.memo(function ({ ...props}: PropsType) {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (demo) {
-            return
-        }
         const thunk = fetchTasksTC({todolistId: props.todolist.id})
         dispatch(thunk)
     }, [])

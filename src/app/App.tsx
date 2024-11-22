@@ -4,16 +4,13 @@ import { TodolistsList } from "features/TodolistsList/TodolistsList"
 import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar"
 import { useDispatch, useSelector } from "react-redux"
 import { initializeAppTC, selectAppStatus, selectIsInitialized } from "app/appSlice"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom"
 import { Login } from "features/Login/Login"
 import { logoutTC, selectIsLoggedIn } from "features/Login/authSlice"
 import { Button, CircularProgress, Container, LinearProgress } from "@mui/material"
 
-type PropsType = {
-  demo?: boolean
-}
 
-function App({ demo = false }: PropsType) {
+function App() {
   const status = useSelector(selectAppStatus)
   const isInitialized = useSelector(selectIsInitialized)
   const isLoggedIn = useSelector(selectIsLoggedIn)
@@ -43,7 +40,7 @@ function App({ demo = false }: PropsType) {
   }
 
   return (
-    <BrowserRouter>
+    <Router>
       <div className="App">
         <ErrorSnackbar />
         {isLoggedIn && (
@@ -57,12 +54,12 @@ function App({ demo = false }: PropsType) {
         }
         <Container fixed>
           <Routes>
-            <Route path="/TaskFlow" element={<TodolistsList demo={demo} />} />
-            <Route path="/TaskFlow/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={isLoggedIn ? <TodolistsList /> : <Navigate to="/login" />} />
           </Routes>
         </Container>
       </div>
-    </BrowserRouter>
+    </Router>
   )
 }
 

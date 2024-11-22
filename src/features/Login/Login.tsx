@@ -36,7 +36,7 @@ export const Login = () => {
     })
 
     if (isLoggedIn) {
-        return <Navigate to={"/TaskFlow"}/>
+        return <Navigate to={"/"}/>
     }
 
     return (

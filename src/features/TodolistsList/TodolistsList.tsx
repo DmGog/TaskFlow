@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect} from "react"
-import {useSelector} from "react-redux"
+import React, { useCallback, useEffect } from "react"
+import { useSelector } from "react-redux"
 import {
     addTodolistTC,
     changeTodolistFilterAC,
@@ -7,22 +7,19 @@ import {
     fetchTodolistsTC,
     FilterValuesType,
     removeTodolistTC,
-    selectTodolists,
+    selectTodolists
 } from "features/TodolistsList/todolistsSlice"
-import {addTaskTC, removeTaskTC, selectTasks, updateTaskTC} from "features/TodolistsList/tasksSlice"
-import {TaskStatuses} from "api/todolists-api"
-import {Grid, Paper} from "@mui/material"
-import {AddItemForm} from "components/AddItemForm/AddItemForm"
-import {Todolist} from "./Todolist/Todolist"
-import {Navigate} from "react-router-dom"
-import {useAppDispatch} from "hooks/useAppDispatch"
-import {selectIsLoggedIn} from "features/Login/authSlice";
+import { addTaskTC, removeTaskTC, selectTasks, updateTaskTC } from "features/TodolistsList/tasksSlice"
+import { TaskStatuses } from "api/todolists-api"
+import { Grid, Paper } from "@mui/material"
+import { AddItemForm } from "components/AddItemForm/AddItemForm"
+import { Todolist } from "./Todolist/Todolist"
+import { Navigate } from "react-router-dom"
+import { useAppDispatch } from "hooks/useAppDispatch"
+import { selectIsLoggedIn } from "features/Login/authSlice"
 
-type PropsType = {
-    demo?: boolean
-}
 
-export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
+export const TodolistsList: React.FC = ( ) => {
     const todolists = useSelector(selectTodolists)
     const tasks = useSelector(selectTasks)
     const isLoggedIn = useSelector(selectIsLoggedIn)
@@ -30,9 +27,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        if (demo || !isLoggedIn) {
-            return
-        }
         dispatch(fetchTodolistsTC())
     }, [])
 
@@ -78,7 +72,7 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
         [dispatch],
     )
     if (!isLoggedIn) {
-        return <Navigate to={"/TaskFlow/login"}/>
+        return <Navigate to={"/login"}/>
     }
 
     return (
@@ -103,7 +97,6 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
                                     removeTodolist={removeTodolist}
                                     changeTaskTitle={changeTaskTitle}
                                     changeTodolistTitle={changeTodolistTitle}
-                                    demo={demo}
                                 />
                             </Paper>
                         </Grid>
