@@ -1,8 +1,10 @@
 import {
     addTaskTC,
-    fetchTasksTC, removeTaskTC,
+    fetchTasksTC,
+    removeTaskTC,
     tasksReducer,
-    TasksStateType, updateTaskTC,
+    TasksStateType,
+    updateTaskTC,
 } from "features/TodolistsList/tasksSlice"
 
 import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from "features/TodolistsList/todolistsSlice"

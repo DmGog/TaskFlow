@@ -2,7 +2,6 @@ import {ResultCode, todolistsAPI, TodolistType} from "api/todolists-api"
 import {RequestStatusType, setAppStatusAC} from "app/appSlice"
 import {handleServerAppError, handleServerNetworkError} from "utils/error-utils"
 import {asyncThunkCreator, buildCreateSlice, PayloadAction} from "@reduxjs/toolkit"
-import {fetchTasksTC} from "features/TodolistsList/tasksSlice";
 
 const initialState: Array<TodolistDomainType> = []
 export type FilterValuesType = "all" | "active" | "completed"

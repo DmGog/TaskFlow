@@ -5,8 +5,9 @@ import {
     changeTodolistFilterAC,
     changeTodolistTitleTC,
     fetchTodolistsTC,
-    FilterValuesType, removeTodolistTC,
-    selectTodolists, todolistsSlice,
+    FilterValuesType,
+    removeTodolistTC,
+    selectTodolists,
 } from "features/TodolistsList/todolistsSlice"
 import {addTaskTC, removeTaskTC, selectTasks, updateTaskTC} from "features/TodolistsList/tasksSlice"
 import {TaskStatuses} from "api/todolists-api"

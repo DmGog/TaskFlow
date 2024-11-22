@@ -10,11 +10,8 @@ const initialState: InitialStateType = {
 }
 export type RequestStatusType = "idle" | "loading" | "succeeded" | "failed"
 export type InitialStateType = {
-    // происходит ли сейчас взаимодействие с сервером
     status: RequestStatusType
-    // если ошибка какая-то глобальная произойдёт - мы запишем текст ошибки сюда
     error: string | null
-    // true когда приложение проинициализировалось (проверили юзера, настройки получили и т.д.)
     isInitialized: boolean
 }
 
@@ -41,7 +38,7 @@ const appSlice = createSlice({
 
 export const appReducer = appSlice.reducer
 export const {setAppStatusAC, setAppErrorAC, setAppInitializedAC} = appSlice.actions
-export const {selectAppError, selectIsInitialized,selectAppStatus} = appSlice.selectors
+export const {selectAppError, selectIsInitialized, selectAppStatus} = appSlice.selectors
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     authAPI.me().then((res) => {
@@ -57,4 +54,3 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 
-type ActionsType = SetAppErrorActionType | SetAppStatusActionType | ReturnType<typeof setAppInitializedAC>

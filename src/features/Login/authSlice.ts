@@ -25,7 +25,6 @@ export const {setIsLoggedInAC} = authSlice.actions
 
 export const {selectIsLoggedIn} = authSlice.selectors
 
-// thunks
 export const loginTC =
     (data: LoginParamsType): AppThunk =>
         (dispatch) => {

@@ -106,7 +106,11 @@ const tasksSlice = createAppSlice({
                     if (index !== -1) tasks.splice(index, 1)
                 }
             }),
-            updateTaskTC:creators.asyncThunk<UpdateTaskArgType, UpdateTaskArgType>(async (arg, {dispatch, rejectWithValue, getState}) => {
+            updateTaskTC: creators.asyncThunk<UpdateTaskArgType, UpdateTaskArgType>(async (arg, {
+                dispatch,
+                rejectWithValue,
+                getState
+            }) => {
 
                 const state = getState() as AppRootStateType
                 const task = state.tasks[arg.todolistId].find((t) => t.id === arg.taskId)
@@ -142,9 +146,13 @@ const tasksSlice = createAppSlice({
                     dispatch(setAppStatusAC({status: "failed"}))
                     return rejectWithValue(null)
                 }
-            }, {fulfilled:(state, action) => { const tasks = state[action.payload.todolistId]
+            }, {
+                fulfilled: (state, action) => {
+                    const tasks = state[action.payload.todolistId]
                     const index = tasks.findIndex((task) => task.id === action.payload.taskId)
-                    tasks[index] = {...tasks[index], ...action.payload.domainModel}}}),
+                    tasks[index] = {...tasks[index], ...action.payload.domainModel}
+                }
+            }),
         }
     }),
     selectors: {
