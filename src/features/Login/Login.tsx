@@ -40,9 +40,9 @@ export const Login = () => {
     }
 
     return (
-        <Grid container justifyContent="center">
-            <Grid item xs={4}>
-                <form onSubmit={formik.handleSubmit}>
+        <Grid container justifyContent="center" >
+            <Grid item xs={4}  minWidth={"360px"}>
+                <form onSubmit={formik.handleSubmit} >
                     <FormControl style={{marginTop:"100px"}}>
                         <FormLabel>
                             <p>
